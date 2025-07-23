@@ -1,3 +1,3 @@
 class RouteNames{
-  // static const String homePage = '/home-page';
+  static const String popularPeoplePage = '/popular-people-page';
 }
