@@ -16,7 +16,7 @@ class PeopleRepositoryImpl implements PeopleRepository {
       final response = await peopleRemoteDataSource.getPopularPeople();
       return Right(response);
     } on DioException catch (e) {
-      return Left(e.response!.data!['message']);
+      return Left(e.response!.data!);
     }
   }
 }

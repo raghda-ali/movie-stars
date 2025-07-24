@@ -14,7 +14,7 @@ class PersonModel extends PersonEntity {
       id: json['id'],
       name: json['name'],
       profilePath: json['profile_path'] ?? '',
-      knownForDepartment: json['known_for_department'],
+      knownForDepartment: json['known_for_department'] ?? '',
       popularity: (json['popularity'] as double),
     );
   }

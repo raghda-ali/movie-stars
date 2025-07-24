@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_stars/bloc_providers.dart';
 import 'package:movie_stars/config/routers/app_router.dart';
 import 'package:movie_stars/config/themes/app_theme.dart';
+import 'package:movie_stars/service_locator.dart';
 
-void main() {
+Future main() async {
+  await setupLocator();
+
   runApp(const MyApp());
 }
 

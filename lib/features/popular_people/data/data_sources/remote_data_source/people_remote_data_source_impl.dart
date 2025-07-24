@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:movie_stars/core/constants/remote_urls.dart';
 import 'package:movie_stars/core/services/dio_service.dart';
 import 'package:movie_stars/features/popular_people/data/data_sources/remote_data_source/people_remote_data_source.dart';
 import 'package:movie_stars/features/popular_people/data/models/person_model.dart';
@@ -11,10 +12,13 @@ class PeopleRemoteDataSourceImpl implements PeopleRemoteDataSource{
   Future<List<PersonModel>> getPopularPeople() async{
     final List<PersonModel> popularPersons = [];
     try {
-      final Response response = await dioService.get(
-        url: '/person/popular',
+      final response = await dioService.get(
+        url: 'person/popular',
+        queryParameters: {
+          'api_key': RemoteUrls.apiKey,
+        }
       );
-      final jsonList = response.data['data'] as List;
+      final jsonList = response.data['results'] as List;
       for (final person in jsonList) {
         popularPersons.add(
           PersonModel.fromJson(
