@@ -6,4 +6,7 @@ abstract class PeopleRepository {
   Future<Either<DioExceptions, List<PersonEntity>>> getPopularPeople({
     required int page,
   });
+  Future<Either<DioExceptions, PersonEntity>> getPersonDetails({
+    required int personId,
+  });
 }

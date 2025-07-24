@@ -23,4 +23,18 @@ class PeopleRepositoryImpl implements PeopleRepository {
       return Left(e.response!.data!);
     }
   }
+
+  @override
+  Future<Either<DioExceptions, PersonEntity>> getPersonDetails({
+    required int personId,
+  }) async {
+    try {
+      final response = await peopleRemoteDataSource.getPersonDetails(
+        personId: personId,
+      );
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(e.response!.data!['message']);
+    }
+  }
 }

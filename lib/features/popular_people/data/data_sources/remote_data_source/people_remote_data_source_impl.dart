@@ -12,7 +12,7 @@ class PeopleRemoteDataSourceImpl implements PeopleRemoteDataSource {
     final List<PersonModel> popularPersons = [];
     try {
       final response = await dioService.get(
-        url: 'person/popular',
+        url: 'popular',
         queryParameters: {'api_key': RemoteUrls.apiKey, 'page': page},
       );
       final jsonList = response.data['results'] as List;
@@ -25,5 +25,11 @@ class PeopleRemoteDataSourceImpl implements PeopleRemoteDataSource {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<PersonModel> getPersonDetails({required int personId}) async {
+    final response = await dioService.get(url: 'person/$personId');
+    return PersonModel.fromJson(response.data);
   }
 }
