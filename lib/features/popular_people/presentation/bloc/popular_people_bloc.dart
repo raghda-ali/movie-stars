@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart';
@@ -5,6 +11,8 @@ import 'package:movie_stars/features/popular_people/domain/entities/person_image
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_basic_info_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_images_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_popular_people_use_case.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 
 part 'popular_people_event.dart';
 part 'popular_people_state.dart';
@@ -24,6 +32,21 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
     required this.getPersonBasicInfoUseCase,
     required this.getPersonImagesUseCase,
   }) : super(GetPopularPeopleInitial()) {
+
+    Future<bool> requestPermissionToGallery() async {
+      if (Platform.isAndroid) {
+        if (await Permission.photos.isGranted ||
+            await Permission.storage.isGranted) {
+          return true;
+        }
+        var status = await Permission.photos.request();
+        if (!status.isGranted) {
+          status = await Permission.storage.request();
+        }
+        return status.isGranted;
+      }
+      return true;
+    }
     on<GetPopularPeople>((event, emit) async {
       emit(GetPopularPeopleLoading());
       final errorOrDone = await getPopularPeopleUseCase(page: event.page);
@@ -92,5 +115,38 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
         },
       );
     });
+    on<SavePersonImage>((event, emit) async {
+      bool isGranted = await requestPermissionToGallery();
+      if (!isGranted) {
+        emit(SavePersonImageFailed(errorMessage: 'Permission not granted'));
+        return;
+      }
+
+      try {
+        var response = await Dio().get(
+          "https://image.tmdb.org/t/p/w500${event.imageUrl}",
+          options: Options(responseType: ResponseType.bytes),
+        );
+
+        String imageName = "saved_image.jpg";
+
+        await SaverGallery.saveImage(
+          Uint8List.fromList(response.data),
+          quality: 60,
+          fileName: imageName,
+          androidRelativePath: "Pictures/MovieStars/PopularPeople",
+          skipIfExists: false,
+        );
+
+        emit(SavePersonImageSuccess());
+
+      } catch (e) {
+        emit(SavePersonImageFailed(errorMessage: e.toString()));
+      }
+    });
+
+
   }
+
+
 }

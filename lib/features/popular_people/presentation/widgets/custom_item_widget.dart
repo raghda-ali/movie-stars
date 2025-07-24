@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_stars/core/shared_widgets/custom_cached_network_image.dart';
 
 class CustomItemWidget extends StatelessWidget {
   final String title;
@@ -22,17 +23,7 @@ class CustomItemWidget extends StatelessWidget {
         height: 70,
         decoration: const BoxDecoration(shape: BoxShape.circle),
         clipBehavior: Clip.hardEdge,
-        child: CachedNetworkImage(
-          imageUrl: image,
-          fit: BoxFit.cover,
-          placeholder:
-              (context, url) => const Center(
-                child: CircularProgressIndicator(color: Colors.grey),
-              ),
-          errorWidget:
-              (context, url, error) =>
-                  const Icon(Icons.error, color: Colors.red),
-        ),
+        child: CustomCachedNetworkImage(imageUrl: image, fit: BoxFit.cover),
       ),
       title: Text(title),
       subtitle: Text(subTitle),

@@ -54,7 +54,8 @@ class PopularPeoplePage extends StatelessWidget {
                         popularPeopleBloc
                             .popularPeople[index]
                             .knownForDepartment!,
-                    image: 'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople[index].profilePath!}',
+                    image:
+                        'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople[index].profilePath!}',
                     onTap: () {
                       context.push(
                         RouterPaths.personBasicInfoPath(

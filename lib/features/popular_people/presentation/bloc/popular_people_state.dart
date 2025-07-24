@@ -48,3 +48,11 @@ class GetPersonImagesFailed extends PopularPeopleState {
 
   const GetPersonImagesFailed({required this.errorMessage});
 }
+
+class SavePersonImageSuccess extends PopularPeopleState {}
+
+class SavePersonImageFailed extends PopularPeopleState {
+  final String errorMessage;
+
+  const SavePersonImageFailed({required this.errorMessage});
+}

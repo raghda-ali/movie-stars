@@ -30,3 +30,9 @@ class GetPersonImages extends PopularPeopleEvent {
 
   const GetPersonImages({required this.personId});
 }
+
+class SavePersonImage extends PopularPeopleEvent {
+  final String imageUrl;
+
+  const SavePersonImage({required this.imageUrl});
+}
