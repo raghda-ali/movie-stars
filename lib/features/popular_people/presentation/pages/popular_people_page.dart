@@ -1,8 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lazy_loading_list/lazy_loading_list.dart';
+import 'package:movie_stars/core/constants/router_paths.dart';
 import 'package:movie_stars/features/popular_people/presentation/bloc/popular_people_bloc.dart';
+
+import '../widgets/custom_item_widget.dart';
 
 class PopularPeoplePage extends StatelessWidget {
   const PopularPeoplePage({super.key});
@@ -45,32 +48,21 @@ class PopularPeoplePage extends StatelessWidget {
                     }
                   },
                   hasMore: popularPeopleBloc.hasMorePeople,
-                  child: ListTile(
-                    leading: Container(
-                      width: 70,
-                      height: 70,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      clipBehavior: Clip.hardEdge,
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople[index].profilePath}',
-                        fit: BoxFit.cover,
-                        placeholder:
-                            (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.grey,
-                              ),
-                            ),
-                        errorWidget:
-                            (context, url, error) =>
-                                const Icon(Icons.error, color: Colors.red),
-                      ),
-                    ),
-                    title: Text(popularPeopleBloc.popularPeople[index].name),
-                    subtitle: Text(
-                      popularPeopleBloc.popularPeople[index].knownForDepartment,
-                    ),
-                    onTap: () {},
+                  child: CustomItemWidget(
+                    title: popularPeopleBloc.popularPeople[index].name,
+                    subTitle:
+                        popularPeopleBloc
+                            .popularPeople[index]
+                            .knownForDepartment!,
+                    image:
+                        'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople[index].profilePath!}',
+                    onTap: () {
+                      context.push(
+                        RouterPaths.personBasicInfoPath(
+                          '${popularPeopleBloc.popularPeople[index].id}',
+                        ),
+                      );
+                    },
                   ),
                 );
               } else {

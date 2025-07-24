@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:movie_stars/core/exceptions/dio_exceptions.dart';
 import 'package:movie_stars/features/popular_people/data/data_sources/remote_data_source/people_remote_data_source.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart';
+import 'package:movie_stars/features/popular_people/domain/entities/person_image_entity.dart';
+import 'package:movie_stars/features/popular_people/domain/entities/person_images_response_entity.dart';
 import 'package:movie_stars/features/popular_people/domain/repositories/people_repository.dart';
 
 class PeopleRepositoryImpl implements PeopleRepository {
@@ -20,7 +22,32 @@ class PeopleRepositoryImpl implements PeopleRepository {
       );
       return Right(response);
     } on DioException catch (e) {
-      return Left(e.response!.data!);
+      return Left(e.response!.data!['status_message']);
     }
   }
+
+  @override
+  Future<Either<DioExceptions, PersonEntity>> getPersonDetails({
+    required int personId,
+  }) async {
+    try {
+      final response = await peopleRemoteDataSource.getPersonDetails(
+        personId: personId,
+      );
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(e.response!.data!['status_message']);
+    }
+  }
+
+  @override
+  Future<Either<DioExceptions, PersonImagesResponseEntity>> getPersonImages({required int personId})async {
+    try {
+      final response = await peopleRemoteDataSource.getPersonImages(
+        personId: personId,
+      );
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(e.response!.data!['status_message']);
+    }  }
 }
