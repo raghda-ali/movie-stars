@@ -4,16 +4,26 @@ import 'package:go_router/go_router.dart';
 import 'package:lazy_loading_list/lazy_loading_list.dart';
 import 'package:movie_stars/core/constants/router_paths.dart';
 import 'package:movie_stars/features/popular_people/presentation/bloc/popular_people_bloc.dart';
-
 import '../widgets/custom_item_widget.dart';
 
-class PopularPeoplePage extends StatelessWidget {
+class PopularPeoplePage extends StatefulWidget {
   const PopularPeoplePage({super.key});
+
+  @override
+  State<PopularPeoplePage> createState() => _PopularPeoplePageState();
+}
+
+class _PopularPeoplePageState extends State<PopularPeoplePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<PopularPeopleBloc>().add(GetPopularPeople(page: 1));
+  }
 
   @override
   Widget build(BuildContext context) {
     final popularPeopleBloc = BlocProvider.of<PopularPeopleBloc>(context);
-    popularPeopleBloc.add(GetPopularPeople(page: 1));
+
     return Scaffold(
       appBar: AppBar(title: const Text('Popular People'), centerTitle: true),
       body: BlocBuilder<PopularPeopleBloc, PopularPeopleState>(
@@ -25,6 +35,10 @@ class PopularPeoplePage extends StatelessWidget {
           if (state is GetPopularPeopleLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.grey),
+            );
+          } else if (state is GetPopularPeopleFailed) {
+            return const Center(
+              child: Text('Something Error, try again later'),
             );
           } else if (popularPeopleBloc.popularPeople.isEmpty) {
             return const Center(child: Text('No Popular People Now'));
