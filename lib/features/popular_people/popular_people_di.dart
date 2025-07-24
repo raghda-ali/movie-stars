@@ -3,6 +3,7 @@ import 'package:movie_stars/features/popular_people/data/data_sources/remote_dat
 import 'package:movie_stars/features/popular_people/data/repositories/people_repository_impl.dart';
 import 'package:movie_stars/features/popular_people/domain/repositories/people_repository.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_basic_info_use_case.dart';
+import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_images_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_popular_people_use_case.dart';
 import 'package:movie_stars/features/popular_people/presentation/bloc/popular_people_bloc.dart';
 import 'package:movie_stars/service_locator.dart';
@@ -15,6 +16,7 @@ class PopularPeopleDi {
       () => PopularPeopleBloc(
         getPopularPeopleUseCase: sl(),
         getPersonBasicInfoUseCase: sl(),
+        getPersonImagesUseCase: sl(),
       ),
     );
 
@@ -22,7 +24,10 @@ class PopularPeopleDi {
       () => GetPopularPeopleUseCase(peopleRepository: sl()),
     );
     sl.registerLazySingleton(
-          () => GetPersonBasicInfoUseCase(peopleRepository: sl()),
+      () => GetPersonBasicInfoUseCase(peopleRepository: sl()),
+    );
+    sl.registerLazySingleton(
+      () => GetPersonImagesUseCase(peopleRepository: sl()),
     );
 
     sl.registerLazySingleton<PeopleRepository>(

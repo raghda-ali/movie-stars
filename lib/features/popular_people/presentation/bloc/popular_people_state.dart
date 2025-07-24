@@ -38,3 +38,13 @@ class GetPersonBasicInfoFailed extends PopularPeopleState {
 
   const GetPersonBasicInfoFailed({required this.errorMessage});
 }
+
+class GetPersonImagesLoading extends PopularPeopleState {}
+
+class GetPersonImagesSuccess extends PopularPeopleState {}
+
+class GetPersonImagesFailed extends PopularPeopleState {
+  final String errorMessage;
+
+  const GetPersonImagesFailed({required this.errorMessage});
+}

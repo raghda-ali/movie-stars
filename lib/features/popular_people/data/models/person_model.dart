@@ -18,8 +18,8 @@ class PersonModel extends PersonEntity {
     return PersonModel(
       id: json['id'],
       name: json['name'],
-      profilePath: json['profile_path'],
-      knownForDepartment: json['known_for_department'],
+      profilePath: json['profile_path']??'',
+      knownForDepartment: json['known_for_department']??'',
       popularity: (json['popularity'] as double),
       biography: json['biography'],
       birthday: json['birthday'],
