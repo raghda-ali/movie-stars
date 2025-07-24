@@ -11,9 +11,13 @@ class PeopleRepositoryImpl implements PeopleRepository {
   PeopleRepositoryImpl({required this.peopleRemoteDataSource});
 
   @override
-  Future<Either<DioExceptions, List<PersonEntity>>> getPopularPeople() async {
+  Future<Either<DioExceptions, List<PersonEntity>>> getPopularPeople({
+    required int page,
+  }) async {
     try {
-      final response = await peopleRemoteDataSource.getPopularPeople();
+      final response = await peopleRemoteDataSource.getPopularPeople(
+        page: page,
+      );
       return Right(response);
     } on DioException catch (e) {
       return Left(e.response!.data!);

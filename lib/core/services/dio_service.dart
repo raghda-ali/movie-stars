@@ -64,6 +64,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:movie_stars/core/constants/remote_urls.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioService {
   final Dio dio;
@@ -94,6 +95,19 @@ class DioService {
         },
       ),
     );
+    if (kDebugMode) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          enabled: true,
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: false,
+          error: true,
+          compact: true,
+        ),
+      );
+    }
   }
 
   Future<Response> get({

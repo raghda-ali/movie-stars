@@ -5,8 +5,11 @@ import 'package:movie_stars/config/routers/app_router.dart';
 import 'package:movie_stars/config/themes/app_theme.dart';
 import 'package:movie_stars/service_locator.dart';
 
+import 'core/helper/app_bloc_observer.dart';
+
 Future main() async {
   await setupLocator();
+  Bloc.observer = AppBlocObserver();
 
   runApp(const MyApp());
 }

@@ -6,11 +6,11 @@ import 'package:movie_stars/features/popular_people/domain/repositories/people_r
 class GetPopularPeopleUseCase {
   final PeopleRepository peopleRepository;
 
-  GetPopularPeopleUseCase({
-    required this.peopleRepository,
-  });
+  GetPopularPeopleUseCase({required this.peopleRepository});
 
-  Future<Either<DioExceptions, List<PersonEntity>>> call() async {
-    return await peopleRepository.getPopularPeople();
+  Future<Either<DioExceptions, List<PersonEntity>>> call({
+    required int page,
+  }) async {
+    return await peopleRepository.getPopularPeople(page: page);
   }
 }

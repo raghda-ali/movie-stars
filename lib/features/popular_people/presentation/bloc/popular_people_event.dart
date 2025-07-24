@@ -7,4 +7,14 @@ sealed class PopularPeopleEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetPopularPeople extends PopularPeopleEvent {}
+class GetPopularPeople extends PopularPeopleEvent {
+  final int page;
+
+  const GetPopularPeople({required this.page});
+}
+
+class LoadMorePopularPeople extends PopularPeopleEvent {
+  final int page;
+
+  const LoadMorePopularPeople({required this.page});
+}

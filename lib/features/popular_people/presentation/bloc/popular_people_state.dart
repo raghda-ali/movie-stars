@@ -1,4 +1,5 @@
 part of 'popular_people_bloc.dart';
+
 sealed class PopularPeopleState extends Equatable {
   const PopularPeopleState();
 
@@ -12,9 +13,18 @@ class GetPopularPeopleLoading extends PopularPeopleState {}
 
 class GetPopularPeopleSuccess extends PopularPeopleState {}
 
-class GetPopularPeopleFailure extends PopularPeopleState {
+class GetPopularPeopleFailed extends PopularPeopleState {
   final String errorMessage;
 
-  const GetPopularPeopleFailure({required this.errorMessage,});
+  const GetPopularPeopleFailed({required this.errorMessage});
 }
 
+class LoadMorePopularPeopleLoading extends PopularPeopleState {}
+
+class LoadMorePopularPeopleSuccess extends PopularPeopleState {}
+
+class LoadMorePopularPeopleFailed extends PopularPeopleState {
+  final String errorMessage;
+
+  const LoadMorePopularPeopleFailed({required this.errorMessage});
+}
