@@ -29,7 +29,10 @@ class PeopleRemoteDataSourceImpl implements PeopleRemoteDataSource {
 
   @override
   Future<PersonModel> getPersonDetails({required int personId}) async {
-    final response = await dioService.get(url: 'person/$personId');
+    final response = await dioService.get(url: '$personId',queryParameters: {
+      'api_key': RemoteUrls.apiKey,
+    });
     return PersonModel.fromJson(response.data);
   }
 }
+
