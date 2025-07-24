@@ -18,3 +18,8 @@ class LoadMorePopularPeople extends PopularPeopleEvent {
 
   const LoadMorePopularPeople({required this.page});
 }
+class GetPersonBasicInfo extends PopularPeopleEvent {
+  final int personId;
+
+  const GetPersonBasicInfo({required this.personId});
+}

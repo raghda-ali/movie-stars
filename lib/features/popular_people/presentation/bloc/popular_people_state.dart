@@ -28,3 +28,13 @@ class LoadMorePopularPeopleFailed extends PopularPeopleState {
 
   const LoadMorePopularPeopleFailed({required this.errorMessage});
 }
+
+class GetPersonBasicInfoLoading extends PopularPeopleState {}
+
+class GetPersonBasicInfoSuccess extends PopularPeopleState {}
+
+class GetPersonBasicInfoFailed extends PopularPeopleState {
+  final String errorMessage;
+
+  const GetPersonBasicInfoFailed({required this.errorMessage});
+}
