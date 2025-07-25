@@ -3,10 +3,10 @@ import 'package:movie_stars/core/exceptions/dio_exceptions.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart';
 import 'package:movie_stars/features/popular_people/domain/repositories/people_repository.dart';
 
-class GetPersonBasicInfoUseCase {
+class GetPersonDetailsUseCase {
   final PeopleRepository peopleRepository;
 
-  GetPersonBasicInfoUseCase({required this.peopleRepository});
+  GetPersonDetailsUseCase({required this.peopleRepository});
 
   Future<Either<DioExceptions, PersonEntity>> call({
     required int personId,

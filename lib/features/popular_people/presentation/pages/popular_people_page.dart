@@ -32,11 +32,11 @@ class _PopularPeoplePageState extends State<PopularPeoplePage> {
               popularPeopleBloc.hasMorePeople
                   ? popularPeopleBloc.popularPeople.length + 1
                   : popularPeopleBloc.popularPeople.length;
-          if (state is GetPopularPeopleLoading) {
+          if (state.popularPeopleStatus == RequestStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.grey),
             );
-          } else if (state is GetPopularPeopleFailed) {
+          } else if (state.popularPeopleStatus == RequestStatus.error) {
             return const Center(
               child: Text('Something Error, try again later'),
             );
@@ -69,7 +69,7 @@ class _PopularPeoplePageState extends State<PopularPeoplePage> {
                             .popularPeople[index]
                             .knownForDepartment!,
                     image:
-                        'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople[index].profilePath!}',
+                        'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople[index].profilePath ?? ''}',
                     onTap: () {
                       context.push(
                         RouterPaths.personBasicInfoPath(

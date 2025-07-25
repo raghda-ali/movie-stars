@@ -21,13 +21,16 @@ class FullPersonImagePage extends StatelessWidget {
     final popularPeopleBloc = BlocProvider.of<PopularPeopleBloc>(context);
     return BlocListener<PopularPeopleBloc, PopularPeopleState>(
       listener: (context, state) {
-        if (state is SavePersonImageSuccess) {
+        if (state.savePersonImageStatus == RequestStatus.success) {
           context.showSnackBar(
             context: context,
             message: 'Image Saved Successfully',
           );
-        } else if (state is SavePersonImageFailed) {
-          context.showSnackBar(context: context, message: state.errorMessage);
+        } else if (state.savePersonImageStatus == RequestStatus.error) {
+          context.showSnackBar(
+            context: context,
+            message: state.savePersonImageError!,
+          );
         }
       },
       child: Scaffold(
