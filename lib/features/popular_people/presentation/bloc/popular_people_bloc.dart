@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_images_response_entity.dart';
-import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_basic_info_use_case.dart';
+import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_details_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_images_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_popular_people_use_case.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,7 +18,7 @@ part 'popular_people_state.dart';
 
 class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
   final GetPopularPeopleUseCase getPopularPeopleUseCase;
-  final GetPersonBasicInfoUseCase getPersonBasicInfoUseCase;
+  final GetPersonDetailsUseCase getPersonBasicInfoUseCase;
   final GetPersonImagesUseCase getPersonImagesUseCase;
   List<PersonEntity> popularPeople = [];
   List<PersonEntity> loadedPopularPeople = [];
@@ -30,8 +30,7 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
     required this.getPopularPeopleUseCase,
     required this.getPersonBasicInfoUseCase,
     required this.getPersonImagesUseCase,
-  }) : super(GetPopularPeopleInitial()) {
-
+  }) : super(const PopularPeopleState()) {
     Future<bool> requestPermissionToGallery() async {
       if (Platform.isAndroid) {
         if (await Permission.photos.isGranted ||
@@ -46,78 +45,106 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
       }
       return true;
     }
+
     on<GetPopularPeople>((event, emit) async {
-      emit(GetPopularPeopleLoading());
+      emit(state.copyWith(popularPeopleStatus: RequestStatus.loading));
+
       final errorOrDone = await getPopularPeopleUseCase(page: event.page);
       errorOrDone.fold(
         (error) {
-          emit(GetPopularPeopleFailed(errorMessage: error.toString()));
+          emit(
+            state.copyWith(
+              popularPeopleStatus: RequestStatus.error,
+              popularPeopleError: error.toString(),
+            ),
+          );
         },
         (done) {
           popularPeople = done;
-          emit(GetPopularPeopleSuccess());
-        },
+          emit(state.copyWith(popularPeopleStatus: RequestStatus.success));
+          },
       );
     });
     on<LoadMorePopularPeople>((event, emit) async {
-      emit(LoadMorePopularPeopleLoading());
+      emit(state.copyWith(loadMoreStatus: RequestStatus.loading));
       final errorOrDone = await getPopularPeopleUseCase(page: event.page);
       errorOrDone.fold(
         (error) {
-          emit(LoadMorePopularPeopleFailed(errorMessage: error.toString()));
+          emit(
+            state.copyWith(
+              loadMoreStatus: RequestStatus.error,
+              loadMoreError: error.toString(),
+            ),
+          );
         },
         (done) {
           loadedPopularPeople = done;
         },
       );
-      final Set<int> currentEventsIds =
-          popularPeople.map((event) => event.id).toSet();
-      final allLoadedEvents = loadedPopularPeople.where(
-        (event) => !currentEventsIds.contains(event.id),
+      final Set<int> currentPopularPeopleIds =
+          popularPeople.map((person) => person.id).toSet();
+      final allLoadedPopularPeople = loadedPopularPeople.where(
+        (event) => !currentPopularPeopleIds.contains(event.id),
       );
 
-      popularPeople.addAll(allLoadedEvents);
+      popularPeople.addAll(allLoadedPopularPeople);
       currentPopularPeoplePage++;
       if (popularPeople.length < 15) {
         hasMorePeople = false;
       }
-      emit(LoadMorePopularPeopleSuccess());
+      emit(state.copyWith(loadMoreStatus: RequestStatus.success));
     });
-    on<GetPersonBasicInfo>((event, emit) async {
-      emit(GetPersonBasicInfoLoading());
+    on<GetPersonDetails>((event, emit) async {
+      emit(state.copyWith(personBasicInfoStatus: RequestStatus.loading));
       final errorOrDone = await getPersonBasicInfoUseCase(
         personId: event.personId,
       );
       errorOrDone.fold(
         (error) {
-          emit(GetPersonBasicInfoFailed(errorMessage: error.toString()));
+          emit(
+            state.copyWith(
+              personBasicInfoStatus: RequestStatus.error,
+              personBasicInfoError: error.toString(),
+            ),
+          );
         },
         (done) {
           personBasicInfo = done;
-          emit(GetPersonBasicInfoSuccess());
+          emit(state.copyWith(personBasicInfoStatus: RequestStatus.success));
         },
       );
     });
 
     on<GetPersonImages>((event, emit) async {
-      emit(GetPersonImagesLoading());
+      emit(state.copyWith(personImagesStatus: RequestStatus.loading));
+
       final errorOrDone = await getPersonImagesUseCase(
         personId: event.personId,
       );
       errorOrDone.fold(
         (error) {
-          emit(GetPersonImagesFailed(errorMessage: error.toString()));
+          emit(
+            state.copyWith(
+              personImagesStatus: RequestStatus.error,
+              personImagesError: error.toString(),
+            ),
+          );
         },
         (done) {
           personImagesResponse = done;
-          emit(GetPersonImagesSuccess());
+          emit(state.copyWith(personImagesStatus: RequestStatus.success));
         },
       );
     });
     on<SavePersonImage>((event, emit) async {
       bool isGranted = await requestPermissionToGallery();
       if (!isGranted) {
-        emit(SavePersonImageFailed(errorMessage: 'Permission not granted'));
+        emit(
+          state.copyWith(
+            savePersonImageStatus: RequestStatus.error,
+            savePersonImageError: 'Permission not granted',
+          ),
+        );
         return;
       }
 
@@ -137,15 +164,15 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
           skipIfExists: false,
         );
 
-        emit(SavePersonImageSuccess());
-
+        emit(state.copyWith(savePersonImageStatus: RequestStatus.success));
       } catch (e) {
-        emit(SavePersonImageFailed(errorMessage: e.toString()));
+        emit(
+          state.copyWith(
+            savePersonImageStatus: RequestStatus.error,
+            savePersonImageError: e.toString(),
+          ),
+        );
       }
     });
-
-
   }
-
-
 }

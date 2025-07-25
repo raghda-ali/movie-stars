@@ -25,8 +25,12 @@ class CustomCachedNetworkImage extends StatelessWidget {
           (context, url) => const Center(
             child: CircularProgressIndicator(color: Colors.grey),
           ),
-      errorWidget:
-          (context, url, error) => const Icon(Icons.error, color: Colors.red),
+      errorWidget: (context, url, error) => Image.asset(
+        'assets/images/user.png',
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

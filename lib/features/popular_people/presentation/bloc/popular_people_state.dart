@@ -1,58 +1,70 @@
 part of 'popular_people_bloc.dart';
 
-sealed class PopularPeopleState extends Equatable {
-  const PopularPeopleState();
+enum RequestStatus { initial, loading, success, error }
+
+class PopularPeopleState extends Equatable {
+  final RequestStatus popularPeopleStatus;
+  final RequestStatus loadMorePeopleStatus;
+  final RequestStatus personBasicInfoStatus;
+  final RequestStatus personImagesStatus;
+  final RequestStatus savePersonImageStatus;
+
+  final String? popularPeopleError;
+  final String? loadMoreError;
+  final String? personBasicInfoError;
+  final String? personImagesError;
+  final String? savePersonImageError;
+
+  const PopularPeopleState({
+    this.popularPeopleStatus = RequestStatus.initial,
+    this.loadMorePeopleStatus = RequestStatus.initial,
+    this.personBasicInfoStatus = RequestStatus.initial,
+    this.personImagesStatus = RequestStatus.initial,
+    this.savePersonImageStatus = RequestStatus.initial,
+    this.popularPeopleError,
+    this.loadMoreError,
+    this.personBasicInfoError,
+    this.personImagesError,
+    this.savePersonImageError,
+  });
+
+  PopularPeopleState copyWith({
+    RequestStatus? popularPeopleStatus,
+    RequestStatus? loadMoreStatus,
+    RequestStatus? personBasicInfoStatus,
+    RequestStatus? personImagesStatus,
+    RequestStatus? savePersonImageStatus,
+    String? popularPeopleError,
+    String? loadMoreError,
+    String? personBasicInfoError,
+    String? personImagesError,
+    String? savePersonImageError,
+  }) {
+    return PopularPeopleState(
+      popularPeopleStatus: popularPeopleStatus ?? this.popularPeopleStatus,
+      loadMorePeopleStatus: loadMoreStatus ?? loadMorePeopleStatus,
+      personBasicInfoStatus: personBasicInfoStatus ?? this.personBasicInfoStatus,
+      personImagesStatus: personImagesStatus ?? this.personImagesStatus,
+      savePersonImageStatus: savePersonImageStatus ?? this.savePersonImageStatus,
+      popularPeopleError: popularPeopleError ?? this.popularPeopleError,
+      loadMoreError: loadMoreError ?? this.loadMoreError,
+      personBasicInfoError: personBasicInfoError ?? this.personBasicInfoError,
+      personImagesError: personImagesError ?? this.personImagesError,
+      savePersonImageError: savePersonImageError ?? this.savePersonImageError,
+    );
+  }
 
   @override
-  List<Object> get props => [];
-}
-
-final class GetPopularPeopleInitial extends PopularPeopleState {}
-
-class GetPopularPeopleLoading extends PopularPeopleState {}
-
-class GetPopularPeopleSuccess extends PopularPeopleState {}
-
-class GetPopularPeopleFailed extends PopularPeopleState {
-  final String errorMessage;
-
-  const GetPopularPeopleFailed({required this.errorMessage});
-}
-
-class LoadMorePopularPeopleLoading extends PopularPeopleState {}
-
-class LoadMorePopularPeopleSuccess extends PopularPeopleState {}
-
-class LoadMorePopularPeopleFailed extends PopularPeopleState {
-  final String errorMessage;
-
-  const LoadMorePopularPeopleFailed({required this.errorMessage});
-}
-
-class GetPersonBasicInfoLoading extends PopularPeopleState {}
-
-class GetPersonBasicInfoSuccess extends PopularPeopleState {}
-
-class GetPersonBasicInfoFailed extends PopularPeopleState {
-  final String errorMessage;
-
-  const GetPersonBasicInfoFailed({required this.errorMessage});
-}
-
-class GetPersonImagesLoading extends PopularPeopleState {}
-
-class GetPersonImagesSuccess extends PopularPeopleState {}
-
-class GetPersonImagesFailed extends PopularPeopleState {
-  final String errorMessage;
-
-  const GetPersonImagesFailed({required this.errorMessage});
-}
-
-class SavePersonImageSuccess extends PopularPeopleState {}
-
-class SavePersonImageFailed extends PopularPeopleState {
-  final String errorMessage;
-
-  const SavePersonImageFailed({required this.errorMessage});
+  List<Object?> get props => [
+    popularPeopleStatus,
+    loadMorePeopleStatus,
+    personBasicInfoStatus,
+    personImagesStatus,
+    savePersonImageStatus,
+    popularPeopleError,
+    loadMoreError,
+    personBasicInfoError,
+    personImagesError,
+    savePersonImageError,
+  ];
 }
