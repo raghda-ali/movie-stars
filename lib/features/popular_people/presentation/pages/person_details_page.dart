@@ -36,7 +36,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
                 title: Text(
                   state.personBasicInfoStatus == RequestStatus.loading
                       ? "Loading.."
-                      : basicInfo!.name,
+                      : basicInfo?.name ?? "Movie star",
                 ),
               ),
 
