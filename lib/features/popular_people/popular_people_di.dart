@@ -1,3 +1,4 @@
+import 'package:movie_stars/features/popular_people/data/data_sources/local_data_source/people_local_data_source_impl.dart';
 import 'package:movie_stars/features/popular_people/data/data_sources/remote_data_source/people_remote_data_source.dart';
 import 'package:movie_stars/features/popular_people/data/data_sources/remote_data_source/people_remote_data_source_impl.dart';
 import 'package:movie_stars/features/popular_people/data/repositories/people_repository_impl.dart';
@@ -8,6 +9,8 @@ import 'package:movie_stars/features/popular_people/domain/use_cases/get_popular
 import 'package:movie_stars/features/popular_people/presentation/bloc/popular_people_bloc.dart';
 import 'package:movie_stars/service_locator.dart';
 
+import 'data/data_sources/local_data_source/people_local_data_source.dart';
+
 class PopularPeopleDi {
   final sl = ServiceLocator.getIt;
 
@@ -17,6 +20,8 @@ class PopularPeopleDi {
         getPopularPeopleUseCase: sl(),
         getPersonBasicInfoUseCase: sl(),
         getPersonImagesUseCase: sl(),
+        peopleLocalDataSource: sl(),
+        networkInfo: sl(),
       ),
     );
 
@@ -31,11 +36,18 @@ class PopularPeopleDi {
     );
 
     sl.registerLazySingleton<PeopleRepository>(
-      () => PeopleRepositoryImpl(peopleRemoteDataSource: sl()),
+      () => PeopleRepositoryImpl(
+        peopleRemoteDataSource: sl(),
+        peopleLocalDataSource: sl(),
+        networkInfo: sl(),
+      ),
     );
 
     sl.registerLazySingleton<PeopleRemoteDataSource>(
       () => PeopleRemoteDataSourceImpl(dioService: sl()),
+    );
+    sl.registerLazySingleton<PeopleLocalDataSource>(
+          () => PeopleLocalDataSourceImpl(),
     );
   }
 }

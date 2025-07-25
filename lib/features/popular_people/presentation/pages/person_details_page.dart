@@ -19,8 +19,10 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
   void initState() {
     super.initState();
     final popularPeopleBloc = context.read<PopularPeopleBloc>();
-    popularPeopleBloc.add(GetPersonDetails(personId: widget.personId));
-    popularPeopleBloc.add(GetPersonImages(personId: widget.personId));
+    if(popularPeopleBloc.isConnected) {
+      popularPeopleBloc.add(GetPersonDetails(personId: widget.personId));
+      popularPeopleBloc.add(GetPersonImages(personId: widget.personId));
+    }
   }
 
   @override
@@ -52,11 +54,17 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
                 title: Text(
                   state.personBasicInfoStatus == RequestStatus.loading
                       ? "Loading.."
+                      : !popularPeopleBloc.isConnected
+                      ? "Movie star"
                       : basicInfo?.name ?? "Movie star",
                 ),
               ),
-
-              if (state.personBasicInfoStatus == RequestStatus.loading ||
+              if (!popularPeopleBloc.isConnected)
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(child: Text('No Internet Connection')),
+                )
+              else if (state.personBasicInfoStatus == RequestStatus.loading ||
                   state.personImagesStatus == RequestStatus.loading)
                 const SliverFillRemaining(
                   hasScrollBody: false,
