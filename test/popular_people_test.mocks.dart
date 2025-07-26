@@ -3,19 +3,33 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i11;
 
 import 'package:dartz/dartz.dart' as _i2;
+import 'package:dio/dio.dart' as _i9;
+import 'package:flutter_bloc/flutter_bloc.dart' as _i16;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:movie_stars/core/exceptions/dio_exceptions.dart' as _i5;
-import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart'
+import 'package:movie_stars/core/exceptions/dio_exceptions.dart' as _i12;
+import 'package:movie_stars/core/network/network_info.dart' as _i6;
+import 'package:movie_stars/core/services/dio_service.dart' as _i17;
+import 'package:movie_stars/features/popular_people/data/data_sources/local_data_source/people_local_data_source.dart'
     as _i7;
+import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart'
+    as _i14;
 import 'package:movie_stars/features/popular_people/domain/entities/person_images_response_entity.dart'
-    as _i8;
+    as _i15;
 import 'package:movie_stars/features/popular_people/domain/entities/person_response_entity.dart'
-    as _i6;
+    as _i13;
 import 'package:movie_stars/features/popular_people/domain/repositories/people_repository.dart'
+    as _i10;
+import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_details_use_case.dart'
+    as _i4;
+import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_images_use_case.dart'
+    as _i5;
+import 'package:movie_stars/features/popular_people/domain/use_cases/get_popular_people_use_case.dart'
     as _i3;
+import 'package:movie_stars/features/popular_people/presentation/bloc/popular_people_bloc.dart'
+    as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -36,64 +50,379 @@ class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
     : super(parent, parentInvocation);
 }
 
+class _FakeGetPopularPeopleUseCase_1 extends _i1.SmartFake
+    implements _i3.GetPopularPeopleUseCase {
+  _FakeGetPopularPeopleUseCase_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeGetPersonDetailsUseCase_2 extends _i1.SmartFake
+    implements _i4.GetPersonDetailsUseCase {
+  _FakeGetPersonDetailsUseCase_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeGetPersonImagesUseCase_3 extends _i1.SmartFake
+    implements _i5.GetPersonImagesUseCase {
+  _FakeGetPersonImagesUseCase_3(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeNetworkInfo_4 extends _i1.SmartFake implements _i6.NetworkInfo {
+  _FakeNetworkInfo_4(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakePeopleLocalDataSource_5 extends _i1.SmartFake
+    implements _i7.PeopleLocalDataSource {
+  _FakePeopleLocalDataSource_5(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakePopularPeopleState_6 extends _i1.SmartFake
+    implements _i8.PopularPeopleState {
+  _FakePopularPeopleState_6(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDio_7 extends _i1.SmartFake implements _i9.Dio {
+  _FakeDio_7(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeResponse_8<T> extends _i1.SmartFake implements _i9.Response<T> {
+  _FakeResponse_8(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [PeopleRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPeopleRepository extends _i1.Mock implements _i3.PeopleRepository {
+class MockPeopleRepository extends _i1.Mock implements _i10.PeopleRepository {
   MockPeopleRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.DioExceptions, _i6.PersonResponseEntity>>
+  _i11.Future<_i2.Either<_i12.DioExceptions, _i13.PersonResponseEntity>>
   getPopularPeople({required int? page}) =>
       (super.noSuchMethod(
             Invocation.method(#getPopularPeople, [], {#page: page}),
-            returnValue: _i4.Future<
-              _i2.Either<_i5.DioExceptions, _i6.PersonResponseEntity>
+            returnValue: _i11.Future<
+              _i2.Either<_i12.DioExceptions, _i13.PersonResponseEntity>
             >.value(
-              _FakeEither_0<_i5.DioExceptions, _i6.PersonResponseEntity>(
+              _FakeEither_0<_i12.DioExceptions, _i13.PersonResponseEntity>(
                 this,
                 Invocation.method(#getPopularPeople, [], {#page: page}),
               ),
             ),
           )
-          as _i4.Future<
-            _i2.Either<_i5.DioExceptions, _i6.PersonResponseEntity>
+          as _i11.Future<
+            _i2.Either<_i12.DioExceptions, _i13.PersonResponseEntity>
           >);
 
   @override
-  _i4.Future<_i2.Either<_i5.DioExceptions, _i7.PersonEntity>> getPersonDetails({
-    required int? personId,
-  }) =>
+  _i11.Future<_i2.Either<_i12.DioExceptions, _i14.PersonEntity>>
+  getPersonDetails({required int? personId}) =>
       (super.noSuchMethod(
             Invocation.method(#getPersonDetails, [], {#personId: personId}),
-            returnValue: _i4.Future<
-              _i2.Either<_i5.DioExceptions, _i7.PersonEntity>
+            returnValue: _i11.Future<
+              _i2.Either<_i12.DioExceptions, _i14.PersonEntity>
             >.value(
-              _FakeEither_0<_i5.DioExceptions, _i7.PersonEntity>(
+              _FakeEither_0<_i12.DioExceptions, _i14.PersonEntity>(
                 this,
                 Invocation.method(#getPersonDetails, [], {#personId: personId}),
               ),
             ),
           )
-          as _i4.Future<_i2.Either<_i5.DioExceptions, _i7.PersonEntity>>);
+          as _i11.Future<_i2.Either<_i12.DioExceptions, _i14.PersonEntity>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.DioExceptions, _i8.PersonImagesResponseEntity>>
+  _i11.Future<_i2.Either<_i12.DioExceptions, _i15.PersonImagesResponseEntity>>
   getPersonImages({required int? personId}) =>
       (super.noSuchMethod(
             Invocation.method(#getPersonImages, [], {#personId: personId}),
-            returnValue: _i4.Future<
-              _i2.Either<_i5.DioExceptions, _i8.PersonImagesResponseEntity>
+            returnValue: _i11.Future<
+              _i2.Either<_i12.DioExceptions, _i15.PersonImagesResponseEntity>
             >.value(
-              _FakeEither_0<_i5.DioExceptions, _i8.PersonImagesResponseEntity>(
+              _FakeEither_0<
+                _i12.DioExceptions,
+                _i15.PersonImagesResponseEntity
+              >(
                 this,
                 Invocation.method(#getPersonImages, [], {#personId: personId}),
               ),
             ),
           )
-          as _i4.Future<
-            _i2.Either<_i5.DioExceptions, _i8.PersonImagesResponseEntity>
+          as _i11.Future<
+            _i2.Either<_i12.DioExceptions, _i15.PersonImagesResponseEntity>
           >);
+}
+
+/// A class which mocks [PopularPeopleBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
+  MockPopularPeopleBloc() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.GetPopularPeopleUseCase get getPopularPeopleUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getPopularPeopleUseCase),
+            returnValue: _FakeGetPopularPeopleUseCase_1(
+              this,
+              Invocation.getter(#getPopularPeopleUseCase),
+            ),
+          )
+          as _i3.GetPopularPeopleUseCase);
+
+  @override
+  _i4.GetPersonDetailsUseCase get getPersonBasicInfoUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getPersonBasicInfoUseCase),
+            returnValue: _FakeGetPersonDetailsUseCase_2(
+              this,
+              Invocation.getter(#getPersonBasicInfoUseCase),
+            ),
+          )
+          as _i4.GetPersonDetailsUseCase);
+
+  @override
+  _i5.GetPersonImagesUseCase get getPersonImagesUseCase =>
+      (super.noSuchMethod(
+            Invocation.getter(#getPersonImagesUseCase),
+            returnValue: _FakeGetPersonImagesUseCase_3(
+              this,
+              Invocation.getter(#getPersonImagesUseCase),
+            ),
+          )
+          as _i5.GetPersonImagesUseCase);
+
+  @override
+  _i6.NetworkInfo get networkInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#networkInfo),
+            returnValue: _FakeNetworkInfo_4(
+              this,
+              Invocation.getter(#networkInfo),
+            ),
+          )
+          as _i6.NetworkInfo);
+
+  @override
+  _i7.PeopleLocalDataSource get peopleLocalDataSource =>
+      (super.noSuchMethod(
+            Invocation.getter(#peopleLocalDataSource),
+            returnValue: _FakePeopleLocalDataSource_5(
+              this,
+              Invocation.getter(#peopleLocalDataSource),
+            ),
+          )
+          as _i7.PeopleLocalDataSource);
+
+  @override
+  bool get hasMorePeople =>
+      (super.noSuchMethod(Invocation.getter(#hasMorePeople), returnValue: false)
+          as bool);
+
+  @override
+  int get currentPopularPeoplePage =>
+      (super.noSuchMethod(
+            Invocation.getter(#currentPopularPeoplePage),
+            returnValue: 0,
+          )
+          as int);
+
+  @override
+  bool get isConnected =>
+      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
+          as bool);
+
+  @override
+  set popularPeople(_i13.PersonResponseEntity? _popularPeople) =>
+      super.noSuchMethod(
+        Invocation.setter(#popularPeople, _popularPeople),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set loadedPopularPeople(_i13.PersonResponseEntity? _loadedPopularPeople) =>
+      super.noSuchMethod(
+        Invocation.setter(#loadedPopularPeople, _loadedPopularPeople),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set hasMorePeople(bool? _hasMorePeople) => super.noSuchMethod(
+    Invocation.setter(#hasMorePeople, _hasMorePeople),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set currentPopularPeoplePage(int? _currentPopularPeoplePage) =>
+      super.noSuchMethod(
+        Invocation.setter(#currentPopularPeoplePage, _currentPopularPeoplePage),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set personBasicInfo(_i14.PersonEntity? _personBasicInfo) =>
+      super.noSuchMethod(
+        Invocation.setter(#personBasicInfo, _personBasicInfo),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set personImagesResponse(
+    _i15.PersonImagesResponseEntity? _personImagesResponse,
+  ) => super.noSuchMethod(
+    Invocation.setter(#personImagesResponse, _personImagesResponse),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set isConnected(bool? _isConnected) => super.noSuchMethod(
+    Invocation.setter(#isConnected, _isConnected),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i8.PopularPeopleState get state =>
+      (super.noSuchMethod(
+            Invocation.getter(#state),
+            returnValue: _FakePopularPeopleState_6(
+              this,
+              Invocation.getter(#state),
+            ),
+          )
+          as _i8.PopularPeopleState);
+
+  @override
+  _i11.Stream<_i8.PopularPeopleState> get stream =>
+      (super.noSuchMethod(
+            Invocation.getter(#stream),
+            returnValue: _i11.Stream<_i8.PopularPeopleState>.empty(),
+          )
+          as _i11.Stream<_i8.PopularPeopleState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
+
+  @override
+  _i11.Future<void> checkConnection() =>
+      (super.noSuchMethod(
+            Invocation.method(#checkConnection, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  void add(_i8.PopularPeopleEvent? event) => super.noSuchMethod(
+    Invocation.method(#add, [event]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void onEvent(_i8.PopularPeopleEvent? event) => super.noSuchMethod(
+    Invocation.method(#onEvent, [event]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void emit(_i8.PopularPeopleState? state) => super.noSuchMethod(
+    Invocation.method(#emit, [state]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void on<E extends _i8.PopularPeopleEvent>(
+    _i16.EventHandler<E, _i8.PopularPeopleState>? handler, {
+    _i16.EventTransformer<E>? transformer,
+  }) => super.noSuchMethod(
+    Invocation.method(#on, [handler], {#transformer: transformer}),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void onTransition(
+    _i16.Transition<_i8.PopularPeopleEvent, _i8.PopularPeopleState>? transition,
+  ) => super.noSuchMethod(
+    Invocation.method(#onTransition, [transition]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i11.Future<void> close() =>
+      (super.noSuchMethod(
+            Invocation.method(#close, []),
+            returnValue: _i11.Future<void>.value(),
+            returnValueForMissingStub: _i11.Future<void>.value(),
+          )
+          as _i11.Future<void>);
+
+  @override
+  void onChange(_i16.Change<_i8.PopularPeopleState>? change) =>
+      super.noSuchMethod(
+        Invocation.method(#onChange, [change]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
+    Invocation.method(#addError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
+    Invocation.method(#onError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [DioService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDioService extends _i1.Mock implements _i17.DioService {
+  MockDioService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.Dio get dio =>
+      (super.noSuchMethod(
+            Invocation.getter(#dio),
+            returnValue: _FakeDio_7(this, Invocation.getter(#dio)),
+          )
+          as _i9.Dio);
+
+  @override
+  _i11.Future<_i9.Response<dynamic>> get({
+    required String? url,
+    Map<String, dynamic>? queryParameters,
+    _i9.Options? options,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#get, [], {
+              #url: url,
+              #queryParameters: queryParameters,
+              #options: options,
+            }),
+            returnValue: _i11.Future<_i9.Response<dynamic>>.value(
+              _FakeResponse_8<dynamic>(
+                this,
+                Invocation.method(#get, [], {
+                  #url: url,
+                  #queryParameters: queryParameters,
+                  #options: options,
+                }),
+              ),
+            ),
+          )
+          as _i11.Future<_i9.Response<dynamic>>);
 }
