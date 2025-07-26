@@ -16,8 +16,17 @@ class CustomCachedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (imageUrl.trim().isEmpty || imageUrl.startsWith('assets/')) {
+      return Image.asset(
+        'assets/images/user.png',
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+      );
+    }
+
     return CachedNetworkImage(
-      imageUrl: 'https://image.tmdb.org/t/p/w500$imageUrl',
+      imageUrl:'https://image.tmdb.org/t/p/w500$imageUrl',
       width: width,
       height: height,
       fit: fit,

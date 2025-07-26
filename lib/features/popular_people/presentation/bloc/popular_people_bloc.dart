@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:movie_stars/core/network/network_info.dart';
+import 'package:movie_stars/features/popular_people/data/data_sources/local_data_source/people_local_data_source.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart';
 import 'package:movie_stars/features/popular_people/domain/entities/person_images_response_entity.dart';
+import 'package:movie_stars/features/popular_people/domain/entities/person_response_entity.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_details_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_images_use_case.dart';
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_popular_people_use_case.dart';
@@ -20,16 +22,21 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
   final GetPopularPeopleUseCase getPopularPeopleUseCase;
   final GetPersonDetailsUseCase getPersonBasicInfoUseCase;
   final GetPersonImagesUseCase getPersonImagesUseCase;
-  List<PersonEntity> popularPeople = [];
-  List<PersonEntity> loadedPopularPeople = [];
+  final NetworkInfo networkInfo;
+  final PeopleLocalDataSource peopleLocalDataSource;
+  PersonResponseEntity? popularPeople;
+  PersonResponseEntity? loadedPopularPeople;
   bool hasMorePeople = true;
   int currentPopularPeoplePage = 2;
   PersonEntity? personBasicInfo;
   PersonImagesResponseEntity? personImagesResponse;
+  bool isConnected = true;
   PopularPeopleBloc({
     required this.getPopularPeopleUseCase,
     required this.getPersonBasicInfoUseCase,
     required this.getPersonImagesUseCase,
+    required this.networkInfo,
+    required this.peopleLocalDataSource,
   }) : super(const PopularPeopleState()) {
     Future<bool> requestPermissionToGallery() async {
       if (Platform.isAndroid) {
@@ -62,13 +69,26 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
         (done) {
           popularPeople = done;
           emit(state.copyWith(popularPeopleStatus: RequestStatus.success));
-          },
+        },
       );
     });
+
     on<LoadMorePopularPeople>((event, emit) async {
       emit(state.copyWith(loadMoreStatus: RequestStatus.loading));
-      final errorOrDone = await getPopularPeopleUseCase(page: event.page);
-      errorOrDone.fold(
+
+      final int lastCachedPage =
+          await peopleLocalDataSource.getLastCachedPage();
+      checkConnection();
+
+      if (!isConnected && currentPopularPeoplePage > lastCachedPage) {
+        hasMorePeople = false;
+        emit(state.copyWith(loadMoreStatus: RequestStatus.success));
+        return;
+      }
+
+      final errorOrResult = await getPopularPeopleUseCase(page: event.page);
+
+      errorOrResult.fold(
         (error) {
           emit(
             state.copyWith(
@@ -77,22 +97,26 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
             ),
           );
         },
-        (done) {
-          loadedPopularPeople = done;
+        (data) {
+          loadedPopularPeople = data;
+          final Set<int> currentPopularPeopleIds =
+              popularPeople!.results.map((person) => person.id).toSet();
+          final allLoadedPopularPeople = loadedPopularPeople!.results.where(
+            (event) => !currentPopularPeopleIds.contains(event.id),
+          );
+
+          popularPeople!.results.addAll(allLoadedPopularPeople);
+
+          currentPopularPeoplePage++;
+
+          if (currentPopularPeoplePage > popularPeople!.totalPages ||
+              currentPopularPeoplePage >= 500) {
+            hasMorePeople = false;
+          }
+
+          emit(state.copyWith(loadMoreStatus: RequestStatus.success));
         },
       );
-      final Set<int> currentPopularPeopleIds =
-          popularPeople.map((person) => person.id).toSet();
-      final allLoadedPopularPeople = loadedPopularPeople.where(
-        (event) => !currentPopularPeopleIds.contains(event.id),
-      );
-
-      popularPeople.addAll(allLoadedPopularPeople);
-      currentPopularPeoplePage++;
-      if (popularPeople.length < 15) {
-        hasMorePeople = false;
-      }
-      emit(state.copyWith(loadMoreStatus: RequestStatus.success));
     });
     on<GetPersonDetails>((event, emit) async {
       emit(state.copyWith(personBasicInfoStatus: RequestStatus.loading));
@@ -174,5 +198,8 @@ class PopularPeopleBloc extends Bloc<PopularPeopleEvent, PopularPeopleState> {
         );
       }
     });
+  }
+  Future<void> checkConnection() async {
+    isConnected = await networkInfo.isConnected;
   }
 }

@@ -19,6 +19,8 @@ class FullPersonImagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final popularPeopleBloc = BlocProvider.of<PopularPeopleBloc>(context);
+    debugPrint('Navigated to full image page');
+
     return BlocListener<PopularPeopleBloc, PopularPeopleState>(
       listener: (context, state) {
         if (state.savePersonImageStatus == RequestStatus.success) {
