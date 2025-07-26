@@ -10,6 +10,10 @@ A Flutter app to display popular people from The Movie Database (TMDB).
 
 - Full Image Viewer: Tap on any image to view it in full size on a separate screen. You can also save the image to your phone.
 
+- Offline Caching: Popular people data is cached locally to support offline access.
+
+- Comprehensive Testing: Includes unit tests, widget tests, and integration tests to ensure code stability, UI correctness, and full user flow reliability.
+
 ## Installation
 
 Follow the steps below to set up and run the project on your machine.
