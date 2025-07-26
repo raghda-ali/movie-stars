@@ -73,7 +73,7 @@ class _PopularPeoplePageState extends State<PopularPeoplePage> {
                               .results[index]
                               .knownForDepartment!,
                       image:
-                          'https://image.tmdb.org/t/p/w500${popularPeopleBloc.popularPeople!.results[index].profilePath ?? ''}',
+                          popularPeopleBloc.popularPeople!.results[index].profilePath ?? '',
                       onTap: () async {
                         context.push(
                           RouterPaths.personBasicInfoPath(

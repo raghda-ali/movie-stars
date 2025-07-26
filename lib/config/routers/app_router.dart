@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:movie_stars/core/constants/route_names.dart';
 import 'package:movie_stars/core/constants/router_paths.dart';
-import 'package:movie_stars/features/popular_people/presentation/pages/full_image_page.dart';
+import 'package:movie_stars/features/popular_people/presentation/pages/full_person_image_page.dart';
 import 'package:movie_stars/features/popular_people/presentation/pages/person_details_page.dart';
 
 import '../../features/popular_people/presentation/pages/popular_people_page.dart';

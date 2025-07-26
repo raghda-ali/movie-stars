@@ -95,7 +95,7 @@ class _PersonDetailsPageState extends State<PersonDetailsPage> {
                             child: CustomCachedNetworkImage(
                               imageUrl:
                                   basicInfo?.profilePath ??
-                                  'assets/images/user.png',
+                                  '',
                               fit: BoxFit.cover,
                             ),
                           ),
