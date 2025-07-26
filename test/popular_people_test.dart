@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:mockito/annotations.dart';
 import 'package:movie_stars/core/network/network_info.dart';
 import 'package:movie_stars/core/services/dio_service.dart';
