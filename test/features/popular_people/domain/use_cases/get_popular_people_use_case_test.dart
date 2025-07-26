@@ -19,43 +19,44 @@ void main() {
       peopleRepository: mockPeopleRepository,
     );
   });
-
-  test('should return PersonResponseEntity from repository', () async {
-    //arrange
+  group('get popular people', () {
     const testPage = 1;
-    final testResponse = PersonResponseEntity(
-      page: 1,
-      totalPages: 500,
-      results: [
-        PersonModel(id: 1, name: 'George Walton'),
-        PersonModel(id: 2, name: 'Mark Richard'),
-      ],
-    );
-    when(
-      mockPeopleRepository.getPopularPeople(page: testPage),
-    ).thenAnswer((_) async => Right(testResponse));
-    //act
-    final result = await getPopularPeopleUseCase.call(page: testPage);
-    //assert
-    expect(result, Right(testResponse));
-    verify(mockPeopleRepository.getPopularPeople(page: testPage)).called(1);
-    verifyNoMoreInteractions(mockPeopleRepository);
-  });
-  test('should return DioExceptions when repository fails', () async {
-    // arrange
-    const testPage = 1;
-    final dioError = DioException(requestOptions: RequestOptions(path: ''));
-    final expectedException = DioExceptions.fromDioError(dioError);
+    test('should return PersonResponseEntity from repository', () async {
+      //arrange
+      final testResponse = PersonResponseEntity(
+        page: 1,
+        totalPages: 500,
+        results: [
+          PersonModel(id: 1, name: 'George Walton'),
+          PersonModel(id: 2, name: 'Mark Richard'),
+        ],
+      );
+      when(
+        mockPeopleRepository.getPopularPeople(page: testPage),
+      ).thenAnswer((_) async => Right(testResponse));
+      //act
+      final result = await getPopularPeopleUseCase.call(page: testPage);
+      //assert
+      expect(result, Right(testResponse));
+      verify(mockPeopleRepository.getPopularPeople(page: testPage)).called(1);
+      verifyNoMoreInteractions(mockPeopleRepository);
+    });
+    test('should return DioExceptions when repository fails', () async {
+      // arrange
+      final dioError = DioException(requestOptions: RequestOptions(path: ''));
+      final expectedException = DioExceptions.fromDioError(dioError);
 
-    when(mockPeopleRepository.getPopularPeople(page: testPage))
-        .thenAnswer((_) async => Left(expectedException));
+      when(
+        mockPeopleRepository.getPopularPeople(page: testPage),
+      ).thenAnswer((_) async => Left(expectedException));
 
-    // act
-    final result = await getPopularPeopleUseCase.call(page: testPage);
+      // act
+      final result = await getPopularPeopleUseCase.call(page: testPage);
 
-    // assert
-    expect(result, equals(Left(expectedException)));
-    verify(mockPeopleRepository.getPopularPeople(page: testPage)).called(1);
-    verifyNoMoreInteractions(mockPeopleRepository);
+      // assert
+      expect(result, equals(Left(expectedException)));
+      verify(mockPeopleRepository.getPopularPeople(page: testPage)).called(1);
+      verifyNoMoreInteractions(mockPeopleRepository);
+    });
   });
 }
