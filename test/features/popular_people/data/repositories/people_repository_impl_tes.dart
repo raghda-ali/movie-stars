@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dartz/dartz.dart';
+import 'package:movie_stars/core/exceptions/dio_exceptions.dart';
 import 'package:movie_stars/features/popular_people/data/models/person_model.dart';
 import 'package:movie_stars/features/popular_people/data/models/person_response_model.dart';
 import 'package:movie_stars/features/popular_people/data/repositories/people_repository_impl.dart';
@@ -69,6 +71,25 @@ void main() {
       expect(result, Right(testResponse));
       verify(mockLocalDataSource.getCachedPopularPeople(testPage)).called(1);
     });
+    test('should return DioExceptions when getPopularPeople fails', () async {
+      // arrange
+      final dioError = DioException(
+        requestOptions: RequestOptions(path: ''),
+        type: DioExceptionType.connectionError,
+      );
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      when(
+        mockRemoteDataSource.getPopularPeople(page: testPage),
+      ).thenThrow(dioError);
+      // act
+      final result = await peopleRepositoryImpl.getPopularPeople(
+        page: testPage,
+      );
+      // assert
+      result.fold((failure) {
+        expect(failure.message, DioExceptions.fromDioError(dioError).message);
+      }, (_) => fail('Expected failure but got success'));
+    });
   });
 
   group('getPersonDetails', () {
@@ -86,6 +107,26 @@ void main() {
       );
       // assert
       expect(result, Right(testPerson));
+      verify(mockRemoteDataSource.getPersonDetails(personId: testId)).called(1);
+    });
+    test('should return DioException when getPersonDetails fails', () async {
+      // arrange
+      final dioError = DioException(
+        requestOptions: RequestOptions(path: ''),
+        type: DioExceptionType.unknown,
+      );
+      when(
+        mockRemoteDataSource.getPersonDetails(personId: testId),
+      ).thenThrow(dioError);
+
+      // act
+      final result = await peopleRepositoryImpl.getPersonDetails(
+        personId: testId,
+      );
+      // assert
+      result.fold((failure) {
+        expect(failure.message, DioExceptions.fromDioError(dioError).message);
+      }, (_) => fail('Expected failure but got success'));
       verify(mockRemoteDataSource.getPersonDetails(personId: testId)).called(1);
     });
   });

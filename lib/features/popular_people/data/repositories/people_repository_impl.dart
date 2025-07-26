@@ -36,7 +36,7 @@ class PeopleRepositoryImpl implements PeopleRepository {
         return Right(localPeople);
       }
     } on DioException catch (e) {
-      return Left(e.response!.data!['status_message']);
+      return Left(DioExceptions.fromDioError(e));
     }
   }
 
@@ -50,7 +50,7 @@ class PeopleRepositoryImpl implements PeopleRepository {
       );
       return Right(response);
     } on DioException catch (e) {
-      return Left(e.response!.data!['status_message']);
+      return Left(DioExceptions.fromDioError(e));
     }
   }
 
@@ -64,7 +64,7 @@ class PeopleRepositoryImpl implements PeopleRepository {
       );
       return Right(response);
     } on DioException catch (e) {
-      return Left(e.response!.data!['status_message']);
+      return Left(DioExceptions.fromDioError(e));
     }
   }
 }
