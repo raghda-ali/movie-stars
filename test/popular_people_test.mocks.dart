@@ -3,25 +3,31 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i11;
+import 'dart:async' as _i14;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:dio/dio.dart' as _i9;
-import 'package:flutter_bloc/flutter_bloc.dart' as _i16;
+import 'package:flutter_bloc/flutter_bloc.dart' as _i18;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:movie_stars/core/exceptions/dio_exceptions.dart' as _i12;
+import 'package:movie_stars/core/exceptions/dio_exceptions.dart' as _i15;
 import 'package:movie_stars/core/network/network_info.dart' as _i6;
-import 'package:movie_stars/core/services/dio_service.dart' as _i17;
+import 'package:movie_stars/core/services/dio_service.dart' as _i19;
 import 'package:movie_stars/features/popular_people/data/data_sources/local_data_source/people_local_data_source.dart'
     as _i7;
-import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart'
-    as _i14;
-import 'package:movie_stars/features/popular_people/domain/entities/person_images_response_entity.dart'
-    as _i15;
-import 'package:movie_stars/features/popular_people/domain/entities/person_response_entity.dart'
-    as _i13;
-import 'package:movie_stars/features/popular_people/domain/repositories/people_repository.dart'
+import 'package:movie_stars/features/popular_people/data/data_sources/remote_data_source/people_remote_data_source.dart'
+    as _i20;
+import 'package:movie_stars/features/popular_people/data/models/person_model.dart'
+    as _i11;
+import 'package:movie_stars/features/popular_people/data/models/person_response_model.dart'
     as _i10;
+import 'package:movie_stars/features/popular_people/domain/entities/person_entity.dart'
+    as _i17;
+import 'package:movie_stars/features/popular_people/domain/entities/person_images_response_entity.dart'
+    as _i12;
+import 'package:movie_stars/features/popular_people/domain/entities/person_response_entity.dart'
+    as _i16;
+import 'package:movie_stars/features/popular_people/domain/repositories/people_repository.dart'
+    as _i13;
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_details_use_case.dart'
     as _i4;
 import 'package:movie_stars/features/popular_people/domain/use_cases/get_person_images_use_case.dart'
@@ -95,67 +101,84 @@ class _FakeResponse_8<T> extends _i1.SmartFake implements _i9.Response<T> {
     : super(parent, parentInvocation);
 }
 
+class _FakePersonResponseModel_9 extends _i1.SmartFake
+    implements _i10.PersonResponseModel {
+  _FakePersonResponseModel_9(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakePersonModel_10 extends _i1.SmartFake implements _i11.PersonModel {
+  _FakePersonModel_10(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakePersonImagesResponseEntity_11 extends _i1.SmartFake
+    implements _i12.PersonImagesResponseEntity {
+  _FakePersonImagesResponseEntity_11(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [PeopleRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPeopleRepository extends _i1.Mock implements _i10.PeopleRepository {
+class MockPeopleRepository extends _i1.Mock implements _i13.PeopleRepository {
   MockPeopleRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.Future<_i2.Either<_i12.DioExceptions, _i13.PersonResponseEntity>>
+  _i14.Future<_i2.Either<_i15.DioExceptions, _i16.PersonResponseEntity>>
   getPopularPeople({required int? page}) =>
       (super.noSuchMethod(
             Invocation.method(#getPopularPeople, [], {#page: page}),
-            returnValue: _i11.Future<
-              _i2.Either<_i12.DioExceptions, _i13.PersonResponseEntity>
+            returnValue: _i14.Future<
+              _i2.Either<_i15.DioExceptions, _i16.PersonResponseEntity>
             >.value(
-              _FakeEither_0<_i12.DioExceptions, _i13.PersonResponseEntity>(
+              _FakeEither_0<_i15.DioExceptions, _i16.PersonResponseEntity>(
                 this,
                 Invocation.method(#getPopularPeople, [], {#page: page}),
               ),
             ),
           )
-          as _i11.Future<
-            _i2.Either<_i12.DioExceptions, _i13.PersonResponseEntity>
+          as _i14.Future<
+            _i2.Either<_i15.DioExceptions, _i16.PersonResponseEntity>
           >);
 
   @override
-  _i11.Future<_i2.Either<_i12.DioExceptions, _i14.PersonEntity>>
+  _i14.Future<_i2.Either<_i15.DioExceptions, _i17.PersonEntity>>
   getPersonDetails({required int? personId}) =>
       (super.noSuchMethod(
             Invocation.method(#getPersonDetails, [], {#personId: personId}),
-            returnValue: _i11.Future<
-              _i2.Either<_i12.DioExceptions, _i14.PersonEntity>
+            returnValue: _i14.Future<
+              _i2.Either<_i15.DioExceptions, _i17.PersonEntity>
             >.value(
-              _FakeEither_0<_i12.DioExceptions, _i14.PersonEntity>(
+              _FakeEither_0<_i15.DioExceptions, _i17.PersonEntity>(
                 this,
                 Invocation.method(#getPersonDetails, [], {#personId: personId}),
               ),
             ),
           )
-          as _i11.Future<_i2.Either<_i12.DioExceptions, _i14.PersonEntity>>);
+          as _i14.Future<_i2.Either<_i15.DioExceptions, _i17.PersonEntity>>);
 
   @override
-  _i11.Future<_i2.Either<_i12.DioExceptions, _i15.PersonImagesResponseEntity>>
+  _i14.Future<_i2.Either<_i15.DioExceptions, _i12.PersonImagesResponseEntity>>
   getPersonImages({required int? personId}) =>
       (super.noSuchMethod(
             Invocation.method(#getPersonImages, [], {#personId: personId}),
-            returnValue: _i11.Future<
-              _i2.Either<_i12.DioExceptions, _i15.PersonImagesResponseEntity>
+            returnValue: _i14.Future<
+              _i2.Either<_i15.DioExceptions, _i12.PersonImagesResponseEntity>
             >.value(
               _FakeEither_0<
-                _i12.DioExceptions,
-                _i15.PersonImagesResponseEntity
+                _i15.DioExceptions,
+                _i12.PersonImagesResponseEntity
               >(
                 this,
                 Invocation.method(#getPersonImages, [], {#personId: personId}),
               ),
             ),
           )
-          as _i11.Future<
-            _i2.Either<_i12.DioExceptions, _i15.PersonImagesResponseEntity>
+          as _i14.Future<
+            _i2.Either<_i15.DioExceptions, _i12.PersonImagesResponseEntity>
           >);
 }
 
@@ -241,14 +264,14 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
           as bool);
 
   @override
-  set popularPeople(_i13.PersonResponseEntity? _popularPeople) =>
+  set popularPeople(_i16.PersonResponseEntity? _popularPeople) =>
       super.noSuchMethod(
         Invocation.setter(#popularPeople, _popularPeople),
         returnValueForMissingStub: null,
       );
 
   @override
-  set loadedPopularPeople(_i13.PersonResponseEntity? _loadedPopularPeople) =>
+  set loadedPopularPeople(_i16.PersonResponseEntity? _loadedPopularPeople) =>
       super.noSuchMethod(
         Invocation.setter(#loadedPopularPeople, _loadedPopularPeople),
         returnValueForMissingStub: null,
@@ -268,7 +291,7 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
       );
 
   @override
-  set personBasicInfo(_i14.PersonEntity? _personBasicInfo) =>
+  set personBasicInfo(_i17.PersonEntity? _personBasicInfo) =>
       super.noSuchMethod(
         Invocation.setter(#personBasicInfo, _personBasicInfo),
         returnValueForMissingStub: null,
@@ -276,7 +299,7 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
 
   @override
   set personImagesResponse(
-    _i15.PersonImagesResponseEntity? _personImagesResponse,
+    _i12.PersonImagesResponseEntity? _personImagesResponse,
   ) => super.noSuchMethod(
     Invocation.setter(#personImagesResponse, _personImagesResponse),
     returnValueForMissingStub: null,
@@ -300,12 +323,12 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
           as _i8.PopularPeopleState);
 
   @override
-  _i11.Stream<_i8.PopularPeopleState> get stream =>
+  _i14.Stream<_i8.PopularPeopleState> get stream =>
       (super.noSuchMethod(
             Invocation.getter(#stream),
-            returnValue: _i11.Stream<_i8.PopularPeopleState>.empty(),
+            returnValue: _i14.Stream<_i8.PopularPeopleState>.empty(),
           )
-          as _i11.Stream<_i8.PopularPeopleState>);
+          as _i14.Stream<_i8.PopularPeopleState>);
 
   @override
   bool get isClosed =>
@@ -313,13 +336,13 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
           as bool);
 
   @override
-  _i11.Future<void> checkConnection() =>
+  _i14.Future<void> checkConnection() =>
       (super.noSuchMethod(
             Invocation.method(#checkConnection, []),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i14.Future<void>.value(),
+            returnValueForMissingStub: _i14.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i14.Future<void>);
 
   @override
   void add(_i8.PopularPeopleEvent? event) => super.noSuchMethod(
@@ -341,8 +364,8 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
 
   @override
   void on<E extends _i8.PopularPeopleEvent>(
-    _i16.EventHandler<E, _i8.PopularPeopleState>? handler, {
-    _i16.EventTransformer<E>? transformer,
+    _i18.EventHandler<E, _i8.PopularPeopleState>? handler, {
+    _i18.EventTransformer<E>? transformer,
   }) => super.noSuchMethod(
     Invocation.method(#on, [handler], {#transformer: transformer}),
     returnValueForMissingStub: null,
@@ -350,23 +373,23 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
 
   @override
   void onTransition(
-    _i16.Transition<_i8.PopularPeopleEvent, _i8.PopularPeopleState>? transition,
+    _i18.Transition<_i8.PopularPeopleEvent, _i8.PopularPeopleState>? transition,
   ) => super.noSuchMethod(
     Invocation.method(#onTransition, [transition]),
     returnValueForMissingStub: null,
   );
 
   @override
-  _i11.Future<void> close() =>
+  _i14.Future<void> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i14.Future<void>.value(),
+            returnValueForMissingStub: _i14.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i14.Future<void>);
 
   @override
-  void onChange(_i16.Change<_i8.PopularPeopleState>? change) =>
+  void onChange(_i18.Change<_i8.PopularPeopleState>? change) =>
       super.noSuchMethod(
         Invocation.method(#onChange, [change]),
         returnValueForMissingStub: null,
@@ -388,7 +411,7 @@ class MockPopularPeopleBloc extends _i1.Mock implements _i8.PopularPeopleBloc {
 /// A class which mocks [DioService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDioService extends _i1.Mock implements _i17.DioService {
+class MockDioService extends _i1.Mock implements _i19.DioService {
   MockDioService() {
     _i1.throwOnMissingStub(this);
   }
@@ -402,7 +425,7 @@ class MockDioService extends _i1.Mock implements _i17.DioService {
           as _i9.Dio);
 
   @override
-  _i11.Future<_i9.Response<dynamic>> get({
+  _i14.Future<_i9.Response<dynamic>> get({
     required String? url,
     Map<String, dynamic>? queryParameters,
     _i9.Options? options,
@@ -413,7 +436,7 @@ class MockDioService extends _i1.Mock implements _i17.DioService {
               #queryParameters: queryParameters,
               #options: options,
             }),
-            returnValue: _i11.Future<_i9.Response<dynamic>>.value(
+            returnValue: _i14.Future<_i9.Response<dynamic>>.value(
               _FakeResponse_8<dynamic>(
                 this,
                 Invocation.method(#get, [], {
@@ -424,5 +447,118 @@ class MockDioService extends _i1.Mock implements _i17.DioService {
               ),
             ),
           )
-          as _i11.Future<_i9.Response<dynamic>>);
+          as _i14.Future<_i9.Response<dynamic>>);
+}
+
+/// A class which mocks [PeopleRemoteDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPeopleRemoteDataSource extends _i1.Mock
+    implements _i20.PeopleRemoteDataSource {
+  MockPeopleRemoteDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i14.Future<_i10.PersonResponseModel> getPopularPeople({
+    required int? page,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getPopularPeople, [], {#page: page}),
+            returnValue: _i14.Future<_i10.PersonResponseModel>.value(
+              _FakePersonResponseModel_9(
+                this,
+                Invocation.method(#getPopularPeople, [], {#page: page}),
+              ),
+            ),
+          )
+          as _i14.Future<_i10.PersonResponseModel>);
+
+  @override
+  _i14.Future<_i11.PersonModel> getPersonDetails({required int? personId}) =>
+      (super.noSuchMethod(
+            Invocation.method(#getPersonDetails, [], {#personId: personId}),
+            returnValue: _i14.Future<_i11.PersonModel>.value(
+              _FakePersonModel_10(
+                this,
+                Invocation.method(#getPersonDetails, [], {#personId: personId}),
+              ),
+            ),
+          )
+          as _i14.Future<_i11.PersonModel>);
+
+  @override
+  _i14.Future<_i12.PersonImagesResponseEntity> getPersonImages({
+    required int? personId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getPersonImages, [], {#personId: personId}),
+            returnValue: _i14.Future<_i12.PersonImagesResponseEntity>.value(
+              _FakePersonImagesResponseEntity_11(
+                this,
+                Invocation.method(#getPersonImages, [], {#personId: personId}),
+              ),
+            ),
+          )
+          as _i14.Future<_i12.PersonImagesResponseEntity>);
+}
+
+/// A class which mocks [PeopleLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPeopleLocalDataSource extends _i1.Mock
+    implements _i7.PeopleLocalDataSource {
+  MockPeopleLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i14.Future<void> cachePopularPeople(
+    _i10.PersonResponseModel? people,
+    int? page,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#cachePopularPeople, [people, page]),
+            returnValue: _i14.Future<void>.value(),
+            returnValueForMissingStub: _i14.Future<void>.value(),
+          )
+          as _i14.Future<void>);
+
+  @override
+  _i14.Future<_i10.PersonResponseModel> getCachedPopularPeople(int? page) =>
+      (super.noSuchMethod(
+            Invocation.method(#getCachedPopularPeople, [page]),
+            returnValue: _i14.Future<_i10.PersonResponseModel>.value(
+              _FakePersonResponseModel_9(
+                this,
+                Invocation.method(#getCachedPopularPeople, [page]),
+              ),
+            ),
+          )
+          as _i14.Future<_i10.PersonResponseModel>);
+
+  @override
+  _i14.Future<int> getLastCachedPage() =>
+      (super.noSuchMethod(
+            Invocation.method(#getLastCachedPage, []),
+            returnValue: _i14.Future<int>.value(0),
+          )
+          as _i14.Future<int>);
+}
+
+/// A class which mocks [NetworkInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNetworkInfo extends _i1.Mock implements _i6.NetworkInfo {
+  MockNetworkInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i14.Future<bool> get isConnected =>
+      (super.noSuchMethod(
+            Invocation.getter(#isConnected),
+            returnValue: _i14.Future<bool>.value(false),
+          )
+          as _i14.Future<bool>);
 }
