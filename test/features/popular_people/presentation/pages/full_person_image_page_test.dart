@@ -10,21 +10,6 @@ import '../../../../popular_people_test.mocks.dart';
 
 void main() {
   late MockPopularPeopleBloc mockBloc;
-  const testImageUrl = 'image.jpg';
-  const testWidth = 150.0;
-  const testHeight = 300.0;
-  Widget buildTestWidget() {
-    return MaterialApp(
-      home: BlocProvider<PopularPeopleBloc>.value(
-        value: mockBloc,
-        child: const FullPersonImagePage(
-          imageUrl: testImageUrl,
-          width: testWidth,
-          height: testHeight,
-        ),
-      ),
-    );
-  }
 
   setUp(() {
     mockBloc = MockPopularPeopleBloc();
@@ -35,6 +20,22 @@ void main() {
   });
 
   group('FullPersonImagePage Widget Tests', () {
+    const testImageUrl = 'image.jpg';
+    const testWidth = 150.0;
+    const testHeight = 300.0;
+    Widget buildTestWidget() {
+      return MaterialApp(
+        home: BlocProvider<PopularPeopleBloc>.value(
+          value: mockBloc,
+          child: const FullPersonImagePage(
+            imageUrl: testImageUrl,
+            width: testWidth,
+            height: testHeight,
+          ),
+        ),
+      );
+    }
+
     testWidgets(
       'renders FullPersonImagePage with the provided image and dispatches SavePersonImage event when the download button is tapped',
       (WidgetTester tester) async {
